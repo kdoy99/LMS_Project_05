@@ -16,14 +16,23 @@ int main() {
         // 객체에 값을 통하여 연결을 시도
         std::unique_ptr<sql::Connection> conn(driver->connect(url, properties));
 
-        showTasks(conn);
+        // showTasks(conn);
         // addTask(conn, "등록번호", "제목", "작가", "출판사");
-        
         // updateTask(conn, "Tom", true);
         // deleteTask(conn, "None");
         std::cout << "-------------------------------" << std::endl;
-        showTasks(conn);
 
+    while (1)
+    {
+        string input;
+        cout << "책 제목 검색 (종료하려면 q): ";
+        cin >> input;
+        if (input == "q" || input == "Q")
+        {
+            break;
+        }
+        showSelectedTasks(conn, input);
+    }
 
     // 연결 실패시 오류 발생
     } catch(sql::SQLException& e) {

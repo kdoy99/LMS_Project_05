@@ -2,6 +2,7 @@
     "files.associations": {
         "float.h": "c",
         "stdio.h": "c",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "optional": "cpp"
     }
 }
