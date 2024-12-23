@@ -65,7 +65,23 @@ int main(void)
     }
 
     //도서조회
+    const char* booknames[5] = {"로빈슨크루소", "마시멜로이야기", "신데렐라", "백설공주", "일곱난쟁이" };
+    char findbook[50];
+    cout << "찾고 싶은 책 이름을 입력하세요: ";
+    cin >> findbook;
 
+    bool find = false;
+    for (int i = 0; i < 5; i++) {
+        if (strcmp(booknames[i], findbook) == 0) {
+            find = true;
+            break;
+        }
+    }
+    if (find) {
+        cout << "책을 찾았습니다: " << findbook << endl;
+    } else {
+        cout << "책을 찾을 수 없습니다." << endl;
+    }
 
     //대여 및 반납
 }
