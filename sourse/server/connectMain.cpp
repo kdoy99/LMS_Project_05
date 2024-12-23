@@ -17,33 +17,6 @@ int main() {
         std::unique_ptr<sql::Connection> conn(driver->connect(url, properties));
 
         showTasks(conn);
-
-        FILE * fp = fopen("/home/lms/github/LMS_Project_05/data/Library_data.csv", "rt");
-
-        char str[100000];
-        char *jmNum;
-        char *title;
-        char *author;
-        char *publisher;
-        int stock;
-
-        while(fgets(str,sizeof(str),fp))
-        {
-            strtok(str, ",");
-            strtok(NULL, ",");
-            strtok(NULL, ",");
-            jmNum = strtok(NULL, ",");
-            cout << "jmNum: " << jmNum << endl;
-            title = strtok(NULL, ",");
-            cout << "title: " << title << endl;
-            author = strtok(NULL, ",");
-            cout << "author: " << author << endl;
-            publisher = strtok(NULL, ",");
-            cout << "publisher: " << publisher << endl;
-            strtok(NULL, "\n");
-            addTask(conn, jmNum, title, author, publisher);
-        }
-        
         // addTask(conn, "등록번호", "제목", "작가", "출판사");
         
         // updateTask(conn, "Tom", true);

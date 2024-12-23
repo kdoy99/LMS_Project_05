@@ -58,13 +58,19 @@ void showTasks(std::unique_ptr<sql::Connection> &conn) {
         // createStaemet 객체 생성
         std::unique_ptr<sql::Statement> stmnt(conn->createStatement());
         // 쿼리를 실행
-        sql::ResultSet *res = stmnt->executeQuery("select * from tasks");
+        sql::ResultSet *res = stmnt->executeQuery("select * from BOOKINFO");
         // 반복문을 통해서 내부의 값을 반환
         while (res->next()) {
-            std::cout << "등록번호: " << res->getString(1);
-            std::cout << ", 제목: " << res->getString(2);
-            std::cout << ", 작가: " << res->getString(3);
-            std::cout << ", 출판사: " << res->getString(4);\
+            std::cout << "연번: " << res->getString(1);
+            std::cout << ", 소장도서관: " << res->getString(2);
+            std::cout << ", 자료실명: " << res->getString(3);
+            std::cout << ", 등록번호: " << res->getString(4);
+            std::cout << ", 도서명: " << res->getString(5);
+            std::cout << ", 저자: " << res->getString(6);
+            std::cout << ", 출판사: " << res->getString(7);
+            std::cout << ", 출판연도: " << res->getString(8);
+            std::cout << ", 청구기호: " << res->getString(9);
+            std::cout << ", 데이터기준일자: " << res->getString(10) << std::endl;
         }
     // 실패시 오류 메세지 반환
     } catch(sql::SQLException& e){
