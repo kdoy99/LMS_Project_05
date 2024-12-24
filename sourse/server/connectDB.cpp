@@ -3,15 +3,21 @@
 #include <mariadb/conncpp.hpp>
 
 using namespace std;
+using namespace sql;
 
 class Database
 {
     private:
         /* data */
     public:
+        string searchResult[79536];
+        int resultCount;
+        sql::Driver* driver;
+        sql::ResultSet *res;
+        unique_ptr<sql::Connection> conn;
         void showTasks(unique_ptr<sql::Connection> &conn); // SELECT문 실행 함수
         void showSelectedTasks(unique_ptr<sql::Connection> &conn, string BOOKNAME); // SELECT문 실행 함수 2
-        void openDB();
+        void openDB(string user_input);
 };
 
 void Database::showTasks(unique_ptr<sql::Connection> &conn) {
@@ -46,14 +52,18 @@ void Database::showSelectedTasks(unique_ptr<sql::Connection> &conn, string BOOKN
         unique_ptr<sql::Statement> stmnt(conn->createStatement());
         // 쿼리 실행
         string str =  "select BOOKNAME from BOOKINFO where BOOKNAME like '%" + BOOKNAME + "%'"; 
-        sql::ResultSet *res = stmnt->executeQuery(str);
+        res = stmnt->executeQuery(str);
         // 객체에 값을 전달
-        
+        int i = 0;
         while (res->next()) {
-            cout << "제목: " << res->getString(1) << endl;
+            searchResult[i] = res->getString(1);
+            // cout << "제목: " << searchResult[i] << endl;
+            i++;
         }
-        cout << "-------------------------------" << endl;
-        cout << BOOKNAME << " 검색 결과입니다." << endl;
+        resultCount = i;
+        // cout << "-------------------------------" << endl;
+        // cout << BOOKNAME << " 검색 결과입니다." << endl;
+        // cout << "총 " << resultCount << "건" << endl;
         // 객체의 내부 함수를 이용하여 쿼리를 실행
 
     // 실패시 오류 메세지 반환
@@ -62,12 +72,12 @@ void Database::showSelectedTasks(unique_ptr<sql::Connection> &conn, string BOOKN
    }
 }
 
-void Database::openDB()
+void Database::openDB(string user_input)
 {
     cout << "Hello, World!" << endl;
     try {
         // DB연결 객체 생성
-        sql::Driver* driver = sql::mariadb::get_driver_instance();
+        driver = sql::mariadb::get_driver_instance();
         // 연결할 DB의 특정 IP, DB를 정의 (mariaDB localhost is '3306')
         sql::SQLString url("jdbc:mariadb://localhost:3306/LIBRARY");
         // 연결할 DB를 사용할 유저를 정의
@@ -76,30 +86,32 @@ void Database::openDB()
         unique_ptr<sql::Connection> conn(driver->connect(url, properties));
         // showTasks(conn);
         cout << "-------------------------------" << endl;
-
+    
     while (1)
     {
-        string input;
-        cout << "책 제목 검색 (종료하려면 q): ";
-        cin >> input;
-        if (input == "q" || input == "Q")
+        if (user_input == "q" || user_input == "Q")
         {
             break;
         }
-        showSelectedTasks(conn, input);
+        showSelectedTasks(conn, user_input);
+        return;
     }
-
+    }
     // 연결 실패시 오류 발생
-    } catch(sql::SQLException& e) {
+    catch(sql::SQLException& e) {
         cerr << "Error Connecting to MariaDB Platform: " << e.what() << endl;
         // 프로그램 비정상 종료
         return;
     }
 }
 
-int main()
-{
-    Database dat;
-    dat.openDB();
-    return 0;
-}
+// int main()
+// {
+//     Database dat;
+//     string user_input;
+
+//     cout << "입력해라 : ";
+//     cin >> user_input;
+//     dat.openDB(user_input);
+//     return 0;
+// }

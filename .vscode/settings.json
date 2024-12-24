@@ -3,6 +3,7 @@
         "float.h": "c",
         "stdio.h": "c",
         "ostream": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "iostream": "cpp"
     }
 }

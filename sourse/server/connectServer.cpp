@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define BUF_SIZE 30
+#define BUF_SIZE 100000
 void error_handling(string message);
 void read_childproc(int sig);
 
@@ -18,11 +18,13 @@ int main(int argc, char *argv[])
 {
 	int serv_sock, clnt_sock;
 	struct sockaddr_in serv_adr, clnt_adr;
+    Database db;
+    string user_input;
 
     pid_t pid;
     struct sigaction act;
 	socklen_t adr_sz;
-    char buf[BUF_SIZE];
+    char input[BUF_SIZE];
 	int str_len, state;
 	
 	if(argc!=2) {
@@ -64,10 +66,30 @@ int main(int argc, char *argv[])
         if (pid==0)
         {
             close(serv_sock);
-            while ((str_len=read(clnt_sock, buf, BUF_SIZE))!=0)
+            read(clnt_sock, input, sizeof(input));
+            user_input = input;
+            cout << user_input << endl;
+            if (user_input == input)
             {
-                write(clnt_sock, buf, str_len); // TODO
+                cout << "일치!" << endl;
             }
+            
+            db.openDB(user_input);
+
+            for (int i = 0; i < db.resultCount; i++)
+            {
+                while((str_len=read(clnt_sock, input, strlen(input)))!=0)
+                {   
+                    write(clnt_sock, db.searchResult[i].c_str(), str_len);
+                }
+            }
+
+            
+            
+            // cout << "-------------------------------" << endl;
+            // cout << input << " 검색 결과입니다." << endl;
+            // cout << "총 " << db.resultCount << "건" << endl;
+            
             close(clnt_sock);
             puts("client disconnected...\n");
             return 0;

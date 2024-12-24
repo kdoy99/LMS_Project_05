@@ -9,10 +9,8 @@
 
 using namespace std;
 
-#define BUF_SIZE 30
+#define BUF_SIZE 100000
 void error_handling(string message);
-void read_routine(int sock, char *buf);
-void write_routine(int sock, char *buf);
 
 int main(int argc, char *argv[])
 {
@@ -36,47 +34,26 @@ int main(int argc, char *argv[])
         error_handling("connect() error!");
     }
     
-    pid=fork();
-    if (pid==0)
+    while (1)
     {
-        write_routine(sock, buf);
-    }
-    else
-    {
-        read_routine(sock, buf);
+        fputs("책 제목 검색(종료하려면 q): ", stdout);
+        fgets(buf, BUF_SIZE, stdin);
+
+        if (!strcmp(buf, "q\n") || !strcmp(buf, "Q\n"))
+        {
+            break;
+        }
+        
+        write(sock, buf, strlen(buf));
+        int str_len=read(sock, buf, strlen(buf));
+        buf[str_len]=0;
+        printf("Message from server : %s\n", buf);
     }
     
     close(sock);
     return 0;
 }
 
-void read_routine(int sock, char *buf)
-{
-    while (1)
-    {
-        int str_len=read(sock, buf, BUF_SIZE);
-        if (str_len==0)
-        {
-            return;
-        }
-        buf[str_len]=0;
-        printf("Message from server: %s", buf);
-    }
-    
-}
-void write_routine(int sock, char *buf)
-{
-    while (1)
-    {
-        fgets(buf, BUF_SIZE, stdin);
-        if (!strcmp(buf,"q\n") || !strcmp(buf,"Q\n"))
-        {
-            shutdown(sock, SHUT_WR);
-            return;
-        }
-        write(sock, buf, strlen(buf));
-    }
-}
 void error_handling(string message)
 {
 	cout << message << endl;
