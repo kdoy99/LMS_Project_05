@@ -3,8 +3,11 @@
 #include <cstring>
 #include <unistd.h>
 #include <sys/socket.h>
+
+
 #define min '1'
 #define max '3' 
+
 using namespace std;
 
 enum
@@ -36,15 +39,15 @@ struct Member_Information
 void login(Member_Information *MI, Book_Information *BI, int *m_idx, int *mt_idx, char *login_ID);
 char InputMenu();
 
-int main(void)
-{
-    Member_Information MI[100]; 
-    Book_Information BI[100];   
-    int m_idx = 0, mt_idx = 0;   // 인덱스 초기화
-    char login_ID[20];
-    login(MI, BI, &m_idx, &mt_idx, login_ID);
-    return 0;
-}
+// int main(void)
+// {
+//     Member_Information MI[100]; 
+//     Book_Information BI[100];   
+//     int m_idx = 0, mt_idx = 0;   // 인덱스 초기화
+//     char login_ID[20];
+//     login(MI, BI, &m_idx, &mt_idx, login_ID);
+//     return 0;
+// }
 
 
 void login(Member_Information *MI, Book_Information *BI, int *m_idx, int *mt_idx, char *login_ID)

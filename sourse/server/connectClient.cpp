@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include "client.cpp"
 
 using namespace std;
 
@@ -14,6 +15,11 @@ void error_handling(string message);
 
 int main(int argc, char *argv[])
 {
+    Member_Information MI[100]; 
+    Book_Information BI[100];   
+    int m_idx = 0, mt_idx = 0;   // 인덱스 초기화
+    char login_ID[20];
+
 	int sock;
 	pid_t pid;
     char buf[BUF_SIZE];
@@ -33,6 +39,8 @@ int main(int argc, char *argv[])
     {
         error_handling("connect() error!");
     }
+
+    login(MI, BI, &m_idx, &mt_idx, login_ID);
     
     while (1)
     {
