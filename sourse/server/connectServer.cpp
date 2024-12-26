@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define BUF_SIZE 100000
+#define BUF_SIZE 1000000
 void error_handling(string message);
 void read_childproc(int sig);
 
@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
     struct sigaction act;
 	socklen_t adr_sz;
     char input[BUF_SIZE];
+    string output;
+    int* len = new int;
 	int str_len, state;
 	
 	if(argc!=2) {
@@ -66,30 +68,24 @@ int main(int argc, char *argv[])
         if (pid==0)
         {
             close(serv_sock);
-            read(clnt_sock, input, sizeof(input));
-            user_input = input;
-            cout << user_input << endl;
-            if (user_input == input)
+            read(clnt_sock, input, BUF_SIZE);
+            *len = strlen(input);
+            cout << "len : " << *len << endl;
+            char input2[*len];
+            strcpy(input2, input);
+            cout << input2 << endl;
+            user_input = input2;
+            cout << "user_input:" << user_input << endl;
+            if (user_input == "과학")
             {
                 cout << "일치!" << endl;
             }
             
-            db.openDB(user_input);
+            db.openDB("카푸");
 
-            for (int i = 0; i < db.resultCount; i++)
-            {
-                while((str_len=read(clnt_sock, input, strlen(input)))!=0)
-                {   
-                    write(clnt_sock, db.searchResult[i].c_str(), str_len);
-                }
-            }
-
-            
-            
-            // cout << "-------------------------------" << endl;
-            // cout << input << " 검색 결과입니다." << endl;
-            // cout << "총 " << db.resultCount << "건" << endl;
-            
+            output = db.searchResult + "-------------------------------\n" + input + "검색 결과입니다.\n" + "총 " + to_string(db.resultCount) + "건\n";
+            write(clnt_sock, output.c_str(), BUF_SIZE);
+            delete len;
             close(clnt_sock);
             puts("client disconnected...\n");
             return 0;

@@ -10,7 +10,7 @@ class Database
     private:
         /* data */
     public:
-        string searchResult[79536];
+        string searchResult;
         int resultCount;
         sql::Driver* driver;
         sql::ResultSet *res;
@@ -56,11 +56,11 @@ void Database::showSelectedTasks(unique_ptr<sql::Connection> &conn, string BOOKN
         // 객체에 값을 전달
         int i = 0;
         while (res->next()) {
-            searchResult[i] = res->getString(1);
-            // cout << "제목: " << searchResult[i] << endl;
+            searchResult += res->getString(1) + "\n";
             i++;
         }
         resultCount = i;
+        // cout << searchResult << endl;
         // cout << "-------------------------------" << endl;
         // cout << BOOKNAME << " 검색 결과입니다." << endl;
         // cout << "총 " << resultCount << "건" << endl;

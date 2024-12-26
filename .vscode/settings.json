@@ -4,6 +4,7 @@
         "stdio.h": "c",
         "ostream": "cpp",
         "optional": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "string": "cpp"
     }
 }

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define BUF_SIZE 100000
+#define BUF_SIZE 1000000
 void error_handling(string message);
 
 int main(int argc, char *argv[])
@@ -43,10 +43,9 @@ int main(int argc, char *argv[])
         {
             break;
         }
+        write(sock, buf, BUF_SIZE); // 문자열
         
-        write(sock, buf, strlen(buf));
-        int str_len=read(sock, buf, strlen(buf));
-        buf[str_len]=0;
+        read(sock, buf, BUF_SIZE);
         printf("Message from server : %s\n", buf);
     }
     
