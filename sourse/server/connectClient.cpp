@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         error_handling("connect() error!");
     }
 
-    login(MI, BI, &m_idx, &mt_idx, login_ID);
+    // login(MI, BI, &m_idx, &mt_idx, login_ID);
     
     while (1)
     {
@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
             break;
         }
         write(sock, buf, BUF_SIZE); // 문자열
+        
         
         read(sock, buf, BUF_SIZE);
         printf("Message from server : %s\n", buf);

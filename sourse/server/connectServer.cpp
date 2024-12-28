@@ -70,22 +70,19 @@ int main(int argc, char *argv[])
             close(serv_sock);
             read(clnt_sock, input, BUF_SIZE);
             *len = strlen(input);
-            cout << "len : " << *len << endl;
-            char input2[*len];
-            strcpy(input2, input);
-            cout << input2 << endl;
-            user_input = input2;
-            cout << "user_input:" << user_input << endl;
-            if (user_input == "과학")
+            cout << "len: " << *len << endl;
+            cout << "input: " << input << endl;
+            user_input = input;
+            cout << "user_input: " << user_input << endl;
+            if (user_input == "카푸")
             {
                 cout << "일치!" << endl;
             }
             
-            db.openDB("카푸");
+            db.openDB(input);
 
             output = db.searchResult + "-------------------------------\n" + input + "검색 결과입니다.\n" + "총 " + to_string(db.resultCount) + "건\n";
             write(clnt_sock, output.c_str(), BUF_SIZE);
-            delete len;
             close(clnt_sock);
             puts("client disconnected...\n");
             return 0;
